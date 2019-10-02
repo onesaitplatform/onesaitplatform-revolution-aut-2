@@ -1,0 +1,16 @@
+version: "2.1"
+
+services:
+  proxy_new:
+    build: .
+    command: /app/startServer.sh
+    container_name: proxy_new
+    networks:
+      - op_data_datanetwork
+    ports:
+      - "8000:8000"
+      - "90:90"
+    restart: on-failure
+networks:
+  op_data_datanetwork:
+    external: true
