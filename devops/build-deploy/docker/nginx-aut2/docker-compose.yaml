@@ -1,10 +1,10 @@
 version: "2.1"
 
 services:
-  proxy_new:
+  proxy_reconf:
     build: .
     command: /app/startServer.sh
-    container_name: proxy_new
+    container_name: proxy_reconf
     volumes:  
       - ${NGINX_VOLUME}:/etc/nginx:rw
     networks:
