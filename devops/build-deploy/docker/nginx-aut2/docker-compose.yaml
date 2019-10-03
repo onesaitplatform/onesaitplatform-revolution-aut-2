@@ -5,6 +5,8 @@ services:
     build: .
     command: /app/startServer.sh
     container_name: proxy_new
+    volumes:  
+      - ${NGINX_VOLUME}:/etc/nginx:rw
     networks:
       - op_data_datanetwork
     ports:
