@@ -15,9 +15,9 @@ from django.conf import settings
 # then
 #
 # test a config file:
-# http --form POST http://127.0.0.1:8000/nginx/test nginx@/etc/nginx/nginx.conf
+# http POST http://127.0.0.1:8000/nginx/test </etc/nginx/nginx.conf
 # add a new version:
-# http --form POST http://127.0.0.1:8000/nginx/set nginx@/etc/nginx/nginx.conf
+# http POST http://127.0.0.1:8000/nginx/set </etc/nginx/nginx.conf
 # http http://127.0.0.1:8000/nginx/versions - returns an ordered json list
 # http PUT http://127.0.0.1:8000/nginx/undo
 # http PUT  http://127.0.0.1:8000/nginx/undo/N - goes back to version number N
