@@ -18,14 +18,14 @@ If you want to modify the behavior of the API, you can take a look inside the fi
 ```
 CONFIG_PATH="/etc/nginx"
 RECONF_COMMAND="nginx -s reload"
-TEST_COMMAND="nginx -tc {filename}"
+TEST_COMMAND="nginx -tc {filename}
 ```
 
 ## Usage
 
 The interface provides the following functionality through a simple REST interface.
 
-### Get Current Nginx Configuration
+### Get current nginx configuration
 
 Obtains the current configuration and returns it in plaintext.
 
@@ -36,7 +36,7 @@ Return Body: plaintext with the current nginx.conf file.
 Return Code: 200 or 500.
 ```
 
-###  Test Nginx Configuration 
+###  Test nginx configuration 
 
 Tests if the provided nginx configuration will run properly in the instance, the interface will place the configuration in the `/etc/nginx` folder and will run `nginx -tc {filename}`
 
@@ -45,24 +45,22 @@ If something goes wrong the interface will return the nginx error as-is in the b
 ```
 Endpoint: http://127.0.0.1:8000/nginx/test
 Verb: POST
-Form Data:
-   Key: nginx
-   Value: nginx config file.
-Return Code: 200 or 500.
+Body: {NGINX_FILE}
+Return Code: 200 or 500.	
+    500 means that the file will produce an error starting nginx.
 Return Body: The error returned by nginx.
 ```
 
-###  Set Nginx Configuration
+###  Set nginx Configuration
 
 Sets the provided configuration file as the main nginx configuration in the system, and takes a backup of the current configuration. This command will not test if the config file is correct, use with care. The server will perform a nginx reload executing the command  `nginx -s reload`. In the case that a wrong configuration is set, it may happen that nginx won't start, don't panic, the REST interface still allows you to undo the action.
 
 ```
 Endpoint: http://127.0.0.1:8000/nginx/set
 Verb: POST
-Form Data:
-   Key: nginx
-   Value: nginx config file.
+Body: {NGINX_FILE}
 Return Code: 200 or 500.
+    500 ok, you broke nginx, now it's down.
 Return Body: The Error returned by nginx.
 ```
 
@@ -86,8 +84,8 @@ Gets a version listed as available in the versions list, and returns it as plain
 Endpoint: http://127.0.0.1:8000/nginx/version/{VERSION}
 Verb: GET
 Return Body: plaintext with the specified nginx.conf file version.
-Return Code: 200, 405 or 500.
-	405 Means that the requested version can not be found in the system.
+Return Code: 200, 404 or 500.
+	404 Means that the requested version can not be found in the system.
 ```
 
 ### Return to the Last Used Version
@@ -108,11 +106,11 @@ Restores a version from the version list and reloads it with the command `nginx 
 ```
 Endpoint: http://127.0.0.1:8000/nginx/undo/{VERSION}
 Verb: PUT
-Return Code: 200, 405 or 500.
-	405 Means that the requested version can not be found in the system.
+Return Code: 200, 404 or 500.
+	404 Means that the requested version can not be found in the system.
 ```
 
-### Reset Nginx to the Initial Values
+### Reset nginx to the Initial Values
 
 If nothing works you can always return to the initial `nginx.conf` file. You are welcome. 😊
 
@@ -124,4 +122,4 @@ Return Code: 200 or 500.
 
 ## Goodies
 
-This tool is integrated in the onesite-platform with a simple GUI that will simplify the procedure. (WIP)
+This tool is integrated in the onesite-platform with a simple GUI that will simplify the procedure.
