@@ -124,4 +124,4 @@ Return Code: 200 or 500.
 
 ## Goodies
 
-This tool is integrated in the onesite-platform with a simple GUI that will simplify the procedure.
+This tool is integrated in the onesite-platform with a simple GUI that will simplify the procedure. (WIP)
