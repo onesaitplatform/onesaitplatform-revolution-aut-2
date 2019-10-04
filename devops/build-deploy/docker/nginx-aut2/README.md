@@ -4,7 +4,7 @@ This tool is designed to act as a comprehensive interface to the nginx-router de
 
 ## Installation
 
-To install the nginx-reconf tool you can build your own doker image, first take a look to the `.env` file and customize it according to your needs, then try typing the following commands. Please, keep in mind that onesait control panel service must be up and running, otherwise nginx will refuse to start.
+To install the nginx-reconf tool you can build your own docker image, first take a look at the `.env` file and customize it according to your needs, then try typing the following commands. Please, keep in mind that onesait control panel service must be up and running, otherwise nginx will refuse to start.
 
 ```bash
 docker-compose build
@@ -36,7 +36,7 @@ Return Body: plaintext with the current nginx.conf file.
 Return Code: 200 or 500.
 ```
 
-###  Test nginx configuration 
+###  Test nginx configuration
 
 Tests if the provided nginx configuration will run properly in the instance, the interface will place the configuration in the `/etc/nginx` folder and will run `nginx -tc {filename}`
 
@@ -46,7 +46,7 @@ If something goes wrong the interface will return the nginx error as-is in the b
 Endpoint: http://127.0.0.1:8000/nginx/test
 Verb: POST
 Body: {NGINX_FILE}
-Return Code: 200 or 500.	
+Return Code: 200 or 500.
     500 means that the file will produce an error starting nginx.
 Return Body: The error returned by nginx.
 ```
@@ -99,7 +99,7 @@ Return Code: 200, 405 or 500.
 	405 Means that there are no versions. Mainly, you are in the first configuration.
 ```
 
-### Return to a Numbered Version 
+### Return to a Numbered Version
 
 Restores a version from the version list and reloads it with the command `nginx -s reload`.
 
