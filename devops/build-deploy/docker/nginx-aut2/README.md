@@ -4,7 +4,7 @@ This tool is designed to act as a comprehensive interface to the nginx-router de
 
 ## Installation
 
-To install the nginx-reconf tool you can build your own doker image, first take a look to the `.env` file and customize it according to your needs, then try typing the following commands. Please keet in mind that control panel service must be up and running, otherwise nginx will refuse to start.
+To install the nginx-reconf tool you can build your own doker image, first take a look to the `.env` file and customize it according to your needs, then try typing the following commands. Please, keep in mind that onesait control panel service must be up and running, otherwise nginx will refuse to start.
 
 ```bash
 docker-compose build
