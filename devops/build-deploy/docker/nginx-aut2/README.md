@@ -18,14 +18,14 @@ If you want to modify the behavior of the API, you can take a look inside the fi
 ```
 CONFIG_PATH="/etc/nginx"
 RECONF_COMMAND="nginx -s reload"
-TEST_COMMAND="nginx -tc {filename}
+TEST_COMMAND="nginx -tc {filename}"
 ```
 
 ## Usage
 
 The interface provides the following functionality through a simple REST interface.
 
-### Get current nginx configuration
+### Get Current Nginx Configuration
 
 Obtains the current configuration and returns it in plaintext.
 
@@ -36,7 +36,7 @@ Return Body: plaintext with the current nginx.conf file.
 Return Code: 200 or 500.
 ```
 
-###  Test nginx configuration 
+###  Test Nginx Configuration 
 
 Tests if the provided nginx configuration will run properly in the instance, the interface will place the configuration in the `/etc/nginx` folder and will run `nginx -tc {filename}`
 
@@ -52,7 +52,7 @@ Return Code: 200 or 500.
 Return Body: The error returned by nginx.
 ```
 
-###  Set nginx Configuration
+###  Set Nginx Configuration
 
 Sets the provided configuration file as the main nginx configuration in the system, and takes a backup of the current configuration. This command will not test if the config file is correct, use with care. The server will perform a nginx reload executing the command  `nginx -s reload`. In the case that a wrong configuration is set, it may happen that nginx won't start, don't panic, the REST interface still allows you to undo the action.
 
@@ -112,7 +112,7 @@ Return Code: 200, 405 or 500.
 	405 Means that the requested version can not be found in the system.
 ```
 
-### Reset nginx to the Initial Values
+### Reset Nginx to the Initial Values
 
 If nothing works you can always return to the initial `nginx.conf` file. You are welcome. 😊
 
