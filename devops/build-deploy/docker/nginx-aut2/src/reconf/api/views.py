@@ -87,7 +87,7 @@ def nginx_get(request, version=None):
         return HttpResponseNotAllowed(['GET'])
     fn = find_filename(version=version)
     if fn is None:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound(content=f"The version {version} can not be found in the system.")
     with open(fn) as fd:
         response = HttpResponse(content=fd)
         response['Content-Type'] = "text/plain"
@@ -125,10 +125,10 @@ def nginx_undo(request, version=None):
     if version is not None:
         fn = find_filename(version)
         if not fn:
-            return HttpResponseNotFound()
+            return HttpResponseNotFound(content=f"The version {version} can not be found in the system.")
         v = ConfigVersion(fn)
     elif not vs:
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest(content=f"There are no versions to restore.")
     else:
         v = vs[-1]
     shutil.move(v.filename, find_filename(version=None))

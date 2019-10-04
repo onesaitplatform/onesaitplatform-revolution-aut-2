@@ -11,16 +11,20 @@ echo " | |_) | |_| |  / ___ \ |_| | ||_____/ __/                ";
 echo " |_.__/ \__, | /_/   \_\__,_|\__|   |_____|               ";
 echo "        |___/                                             ";
 echo "{petrigilf,kristof.pap,paraire}@gmail.com"
-echo ""
 
-echo "nginx version"
+echo ""
 /usr/sbin/nginx -V
 
 echo ""
-
 echo "Starting nginx"
 /usr/sbin/nginx -c /etc/nginx/nginx.conf
 
+if [ $? -eq 0 ]; then
+    echo "   [*] nginx started."
+else
+    echo "   [!] nginx failed to start, please review your configuration."
+fi
+
+echo ""
 echo "Starting Gunicorn"
 gunicorn -b0.0.0.0:8000 reconf.wsgi
-

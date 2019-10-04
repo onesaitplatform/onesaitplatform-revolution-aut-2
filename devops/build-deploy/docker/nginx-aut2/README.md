@@ -32,7 +32,7 @@ Obtains the current configuration and returns it in plaintext.
 ```
 Endpoint: http://127.0.0.1:8000/nginx
 Verb: GET
-Returns: plaintext with the current nginx.conf file.
+Return Body: plaintext with the current nginx.conf file.
 Return Code: 200 or 500.
 ```
 
@@ -49,7 +49,7 @@ Form Data:
    Key: nginx
    Value: nginx config file.
 Return Code: 200 or 500.
-Body: Error returned by nginx.
+Return Body: The error returned by nginx.
 ```
 
 ###  Set nginx Configuration
@@ -63,7 +63,7 @@ Form Data:
    Key: nginx
    Value: nginx config file.
 Return Code: 200 or 500.
-Body: Error returned by nginx.
+Return Body: The Error returned by nginx.
 ```
 
 ###  Get All the Available Versions
@@ -74,8 +74,20 @@ Gets all the available versions stored as a backup in the nginx config folder an
 Endpoint: http://127.0.0.1:8000/nginx/versions
 Verb: GET
 Return Code: 200 or 500.
-Body: JSON list of versions.
+Return Body: JSON list of versions.
 [{"version": 1, "date": "2019-10-02"}, {"version": 2, "date": "2019-10-02"}]
+```
+
+### Get a Version
+
+Gets a version listed as available in the versions list, and returns it as plaintext.
+
+```
+Endpoint: http://127.0.0.1:8000/nginx/version/{VERSION}
+Verb: GET
+Return Body: plaintext with the specified nginx.conf file version.
+Return Code: 200, 405 or 500.
+	405 Means that the requested version can not be found in the system.
 ```
 
 ### Return to the Last Used Version
@@ -85,7 +97,8 @@ Restores the last used nginx config version and reloads it with the command `ngi
 ```
 Endpoint: http://127.0.0.1:8000/nginx/undo
 Verb: PUT
-Return Code: 200 or 500.
+Return Code: 200, 405 or 500.
+	405 Means that there are no versions. Mainly, you are in the first configuration.
 ```
 
 ### Return to a Numbered Version 
@@ -95,7 +108,8 @@ Restores a version from the version list and reloads it with the command `nginx 
 ```
 Endpoint: http://127.0.0.1:8000/nginx/undo/{VERSION}
 Verb: PUT
-Return Code: 200 or 500.
+Return Code: 200, 405 or 500.
+	405 Means that the requested version can not be found in the system.
 ```
 
 ### Reset nginx to the Initial Values
