@@ -60,7 +60,7 @@ Endpoint: http://127.0.0.1:8000/nginx/set
 Verb: POST
 Body: {NGINX_FILE}
 Return Code: 200 or 500.
-    500 ok, you broke nginx, now it's down.
+    500 well done, you broke nginx, now it's down.
 Return Body: The Error returned by nginx.
 ```
 
