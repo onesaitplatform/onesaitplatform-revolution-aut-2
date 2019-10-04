@@ -151,10 +151,10 @@ def nginx_reset(request):
 def nginx_test_config(request):
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
+    if not request.body:
+        return HttpResponseBadRequest(content=f"Empty file.")
     with tempfile.NamedTemporaryFile(mode="wb", dir=settings.CONFIG_PATH, delete=True) as tmp_conf:
-        for chunk in request.FILES['nginx'].chunks():
-            print(chunk)
-            tmp_conf.write(chunk)
+        tmp_conf.write(request.body)
         tmp_conf.flush()
         p = subprocess.run(settings.TEST_COMMAND.format(filename=tmp_conf.name),
                            shell=True, capture_output=True)
@@ -169,9 +169,10 @@ def nginx_set_config(request):
     config_name = os.path.join(settings.CONFIG_PATH, "nginx.conf")
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
+    if not request.body:
+        return HttpResponseBadRequest(content=f"Empty file.")
     with tempfile.NamedTemporaryFile(mode="wb", dir=settings.CONFIG_PATH, delete=False) as tmp_conf:
-        for chunk in request.FILES['nginx'].chunks():
-            tmp_conf.write(chunk)
+        tmp_conf.write(request.body)
         tmp_conf.flush()
         vs = find_versions()
         if vs:
