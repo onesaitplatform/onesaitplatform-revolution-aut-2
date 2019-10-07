@@ -96,7 +96,7 @@ Restores the last used nginx config version and reloads it with the command `ngi
 Endpoint: http://127.0.0.1:8000/nginx/undo
 Verb: PUT
 Return Code: 200, 405 or 500.
-	405 Means that there are no versions. Mainly, you are in the first configuration.
+	405 Means that there are no versions to restore. Mainly, you are in the first configuration.
 ```
 
 ### Return to a Numbered Version
@@ -106,8 +106,9 @@ Restores a version from the version list and reloads it with the command `nginx 
 ```
 Endpoint: http://127.0.0.1:8000/nginx/undo/{VERSION}
 Verb: PUT
-Return Code: 200, 404 or 500.
+Return Code: 200, 404, 405 or 500.
 	404 Means that the requested version can not be found in the system.
+	405 Means that there are no versions to restore.
 ```
 
 ### Reset nginx to the Initial Values
@@ -122,4 +123,4 @@ Return Code: 200 or 500.
 
 ## Goodies
 
-This tool is integrated in the onesite-platform with a simple GUI that will simplify the procedure.
+This tool is integrated in the onesite-platform with a  GUI that will simplify the procedure of interacting with the API.
