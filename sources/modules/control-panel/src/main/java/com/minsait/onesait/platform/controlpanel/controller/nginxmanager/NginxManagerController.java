@@ -163,31 +163,6 @@ public class NginxManagerController {
 
 	}
 
-	/*@GetMapping("/create")
-	public String createForm(Model model) {
-		populateFormData(model);
-		final Configuration configuration = new Configuration();
-		// Logged user is going to be the creator of the new config
-		configuration.setUser(userService.getUser(utils.getUserId()));
-
-		model.addAttribute(CONFIGURATION_STR, configuration);
-		return CONF_CREATE;
-
-	}
-
-	@PostMapping("/create")
-	public String create(@Valid Configuration configuration, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
-		if (bindingResult.hasErrors()) {
-			utils.addRedirectMessage("configuration.validation.error", redirectAttributes);
-			log.debug("Missing fields");
-			return "redirect:/configurations/create";
-		}
-		configurationService.createConfiguration(configuration);
-		return REDIRECT_CONF_LIST;
-
-	}*/
-
 	@GetMapping("/undo")
 	public String undo(Model model) {
 
@@ -252,65 +227,5 @@ public class NginxManagerController {
 		return "nginxmanager/show";
 
 	}
-
-	/*@PutMapping("/update/{id}")
-	public String update(@PathVariable String id, Model model, @ModelAttribute Configuration configuration) {
-
-		if (configuration != null) {
-
-			try {
-				configurationService.updateConfiguration(configuration);
-			} catch (final Exception e) {
-				log.debug(e.getMessage());
-				return CONF_CREATE;
-			}
-		} else {
-			return "redirect:/update/" + id;
-		}
-
-		model.addAttribute(CONFIGURATION_STR, configuration);
-		return "redirect:/configurations/show/" + id;
-
-	}
-
-	private void populateFormData(Model model) {
-		model.addAttribute("configurationTypes", configurationService.getAllConfigurationTypes());
-		// model.addAttribute("environments",
-		// this.configurationService.getEnvironmentValues());
-	}
-
-	@GetMapping(value = "/show/{id}", produces = "text/html")
-	public String show(@PathVariable("id") String id, Model model) {
-		Configuration configuration = null;
-		if (id != null) {
-			configuration = configurationService.getConfiguration(id);
-		}
-		if (configuration == null)
-			return "error/404";
-
-		model.addAttribute(CONFIGURATION_STR, configuration);
-		return "configurations/show";
-
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
-	@DeleteMapping("/{id}")
-	public String delete(Model model, @PathVariable("id") String id) {
-		Configuration configuration = null;
-		if (id != null) {
-			configuration = configurationService.getConfiguration(id);
-		}
-		if (configuration == null)
-			return "error/404";
-
-		configurationService.deleteConfiguration(id);
-		return REDIRECT_CONF_LIST;
-	}
-
-	@GetMapping("/reload")
-	public String reloadConfigurations(Model model) {
-		resourcesService.reloadConfigurations();
-		return REDIRECT_CONF_LIST;
-	}*/
 
 }

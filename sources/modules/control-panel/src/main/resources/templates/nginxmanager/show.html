@@ -133,21 +133,24 @@
 													
 												</div>
 											</div>
-											<!-- <div class="form-actions">
+											 <div class="form-actions">
 												<div class="pull-left">
-													<button th:if="${#strings.arrayJoin(#authentication.authorities,'')} == 'ROLE_ADMINISTRATOR'" id="newMicroServiceBtn" type="button" class="btn btn-circle no-border btn-outline blue" name="newMicroService" value="newMicroService"><span text="NEW MICROSERVICE"> NEW MICROSERVICE </span></button>	
+													<button th:if="${#strings.arrayJoin(#authentication.authorities,'')} == 'ROLE_ADMINISTRATOR'" id="newMicroServiceBtn" type="button" class="btn btn-circle no-border btn-outline blue" name="newMicroService" value="newMicroService" onclick="newMicroService();"><span text="NEW MICROSERVICE"> NEW MICROSERVICE </span></button>	
 												</div>												
 											</div>
-											<div class="form-actions">
+											<div id="formNewMicroServices" class="form-actions">
 												<div class="pull-left">
 													<div>
-														<label class="control-label">EXTERNAL PATH</label>
+														<label class="control-label" style="margin-left:50px;margin-top: 10px">EXTERNAL PATH</label><input id="txtExternal" type="text" style="margin-left:20px; width: 326px;margin-top: 10px"/>
 													</div>
 													<div>
-														<label class="control-label">INTERNAL URL</label>
+														<label class="control-label" style="margin-left:50px;margin-top: 20px">INTERNAL URL</label><input id="txtInternal" type="text" style="margin-left:28px; width: 326px;margin-top: 20px"/><button id="generateBtn" type="button" style="margin-left:50px" class="btn btn-circle btn-outline btn-primary" name="generate" value="generate" onclick="generate();"><span> GENERATE </span></button>
+													</div>
+													<div>
+														<textarea id="txtNewMicroService" style="width: 500;height: 300;margin-left:155px;margin-top: 30px"></textarea>
 													</div>															
 												</div>												
-											</div>-->												
+											</div>												
 										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /></form>
 										
 										<!-- AUXILIAR FORM TO DELETE CONFIGURATION -->
@@ -180,82 +183,52 @@
 		
 	<!-- MAIN INIT -->
 	<script  th:inline="javascript">
-	//window.onload = function() {
-	var showLog = 1; // console.log toggle
-	console.log('code');
 	
-	document.getElementById('nginxText').readOnly= true;
-	document.getElementById('editBtn').onclick= edit;
+		var showLog = 1; // console.log toggle
+		
+		document.getElementById('nginxText').readOnly= true;
+		document.getElementById('editBtn').onclick= edit;
+		document.getElementById('generateBtn').onclick= generate;
+		document.getElementById('newMicroServiceBtn').onclick= newMicroService;
+		document.getElementById('formNewMicroServices').style.display = 'none';
 
-    //<![CDATA[ 
-	// REDIRECT
-	function navigateUrl(url){  window.location.href = url;	}
+	    //<![CDATA[ 
+		// REDIRECT
+		function navigateUrl(url){  window.location.href = url;	}
+			
+		function edit() {	 
+			document.getElementById('nginxText').readOnly= false;
+	     }
+		
+		function generate() {
+			var newMicroService = "location /"+document.getElementById('txtExternal').value+"{\n";			
+			newMicroService = newMicroService + "\tproxy_pass "+ document.getElementById('txtInternal').value + ";\n";
+			newMicroService = newMicroService + "\tproxy_read_timeout 360s;\n\n";
+			newMicroService = newMicroService + "\tproxy_http_version 1.1;\n";
+			newMicroService = newMicroService + "\tproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n";
+			newMicroService = newMicroService + "\tproxy_set_header Host $http_host;\n";
+			newMicroService = newMicroService + "\tproxy_set_header X-Forwarded-Proto http;\n";
+			newMicroService = newMicroService + "\t#proxy_redirect off;\n";
+			newMicroService = newMicroService + "\tproxy_redirect ~^{INTERNAL_SERVICE_URL}(.+)$ https://$host$1;\n";
+			newMicroService = newMicroService + "\tadd_header 'Access-Control-Allow-Origin' '*' always;\n";
+			newMicroService = newMicroService + "\tadd_header 'Access-Control-Allow-Credentials' 'true';\n";
+			newMicroService = newMicroService + "\tadd_header 'Access-Control-Allow-Methods' 'GET,POST';\n";
+			newMicroService = newMicroService + "\t}\n";
+			
+			document.getElementById('txtNewMicroService').value= newMicroService;
+		}
+		
+		function newMicroService() {
+			if(document.getElementById('formNewMicroServices').style.display === 'block') {
+				document.getElementById('formNewMicroServices').style.display = 'none';				
+			} else {
+				document.getElementById('formNewMicroServices').style.display = 'block';
+			}			
+	    }
+    	
+
 	
-	//function navigateUrlPost(url, attribute){  
-		//$.post(url)
-	//}
-	
-	
-	/*$(document).ready(function()
-	{
-		$("#boton").click(function(){
-		        $.post("046-ejemplo-jquery-post-pagina-externa02.php", function(htmlexterno){
-		   $("#cargaexterna").html(htmlexterno);
-		    	});
-		});
-	});*/
-	
-	function edit() {	 
-		document.getElementById('nginxText').readOnly= false;
-		console.log('edit');
-     }
-	
-	function test() {
-		console.log('test');
-		//document.getElementById('user_view_form').action = @{/nginxmanager/set};
-		console.log(document.getElementById('user_view_form').action);
-		document.getElementById('user_view_form').submit();		
-	}
-		
-		
-	//}
-     	
-	// DELETE Configuration 
-	/*function deleteConfigurationConfirmation(configurationId){
-		console.log('deleteConfigurationConfirmation() -> formId: '+ configurationId);
-		
-		
-		// set action and configurationId to the form
-		$('.delete-configuration').attr('id',configurationId);
-		$('.delete-configuration').attr('action','/controlpanel/configurations/' + configurationId);
-		console.log('deleteUserConfirmation() -> formAction: ' + $('.delete-configuration').attr('action') + ' ID: ' + $('.delete-configuration').attr('userId'));
-		
-		// call configuration Confirm at header.
-		HeaderController.showConfirmDialog(configurationId);	
-	}*/	
-	
-	// MAIN WHEN READY
-	/*$( document ).ready(function() {
-		// init when Document is ready
-		showLog ? console.log('SHOW Configuration ready()...') : '';
-		
-		
-		var myTextArea = document.getElementById('ymlConfig');
-        var myCodeMirror = CodeMirror.fromTextArea(myTextArea, {
-        	mode: "text/x-yaml",
-            lineNumbers: false,
-            matchBrackets: true,
-            styleActiveLine: true,
-            theme:"elegant"          
-        });
-		myCodeMirror.setSize("100%", 350);
-	});
-	 
-	// MAIN WHEN LOAD
-	$(window).load(function(){  
-		// init on load.		
-		showLog ? console.log('SHOW Nginx Manager load()...') : '';		
-	});*/
+
 	
 	//]]>
 	</script>	
