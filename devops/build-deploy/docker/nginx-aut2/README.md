@@ -4,8 +4,6 @@ This tool is designed to act as a comprehensive interface to the nginx-router de
 
 ## Installation
 
-First of all, you can clone this repo in your local environment, please keep in mind that if you are using Windows Services for Linux, to build and run the docker image, you must be sure that your git client will not change the native Linux LF character by the Windows CR character, otherwise you will get a glorious and almost untraceable error in docker.
-
 To install the nginx-reconf tool you can build your own docker image, first take a look at the `.env` file and customize it according to your needs, then try typing the following commands. Please, keep in mind that onesait control panel service must be up and running, otherwise nginx will refuse to start.
 
 ```bash
@@ -126,3 +124,13 @@ Return Code: 200 or 500.
 ## Goodies
 
 This tool is integrated in the onesite-platform with a  GUI that will simplify the procedure of interacting with the API.
+
+## Troubleshoting
+
+Please keep in mind that if you are using Windows Services for Linux, to build and run the docker image, you must be sure that your git client will not change the native Linux LF character by the Windows CR character, otherwise you will get a glorious and almost untraceable error in docker.
+
+```
+Recreating proxy_reconf ... done
+Attaching to proxy_reconf
+proxy_reconf    | standard_init_linux.go:211: exec user process caused "no such file or directory"
+```
