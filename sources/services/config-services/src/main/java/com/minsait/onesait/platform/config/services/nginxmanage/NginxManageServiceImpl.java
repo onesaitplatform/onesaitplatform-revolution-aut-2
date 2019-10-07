@@ -21,9 +21,11 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -47,12 +49,18 @@ public class NginxManageServiceImpl implements NginxManageService {
 	}
 	
 	@Override
-	public String setNginx(String nginx){
-		HttpEntity<String> entity=new HttpEntity<String>(nginx);
-		this.restTemplate.exchange(nginxServiceUrl+"/nginx/set", HttpMethod.POST, entity, String.class);
-		
-		String nginxConf=this.restTemplate.getForObject(nginxServiceUrl+"/nginx", String.class);
-		return nginxConf;
+	public String setNginx(String nginx){	
+		try {
+			HttpEntity<String> entity=new HttpEntity<String>(nginx);
+			this.restTemplate.exchange(nginxServiceUrl+"/nginx/test", HttpMethod.POST, entity, String.class);
+			this.restTemplate.exchange(nginxServiceUrl+"/nginx/set", HttpMethod.POST, entity, String.class);			
+			String nginxConf=this.restTemplate.getForObject(nginxServiceUrl+"/nginx", String.class);
+			return nginxConf;
+		}
+		catch (HttpServerErrorException e) {
+			String nginxConf= new String(e.getResponseBodyAsByteArray()) + "\n\nPress 'Previous Version' if you want undo the changes";
+			return nginxConf;
+		}
 	}
 	
 	@Override
