@@ -125,7 +125,7 @@ Return Code: 200 or 500.
 
 This tool is integrated in the onesite-platform with a  GUI that will simplify the procedure of interacting with the API.
 
-## Troubleshoting
+## Troubleshooting
 
 Please keep in mind that if you are using Windows Services for Linux, to build and run the docker image, you must be sure that your git client will not change the native Linux LF character by the Windows CR character, otherwise you will get a glorious and almost untraceable error in docker.
 
